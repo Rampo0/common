@@ -21,6 +21,7 @@ export const currentUser = ( req : Request , res : Response , next : NextFunctio
     }
 
     if(token){
+        console.log(token);
         const payload = jwt.verify(token ,  process.env.JWT_KEY!) as UserPayload;
         req.currentUser = payload;
     }
