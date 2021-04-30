@@ -43,7 +43,9 @@ export abstract class Listener<T extends Event>{
         try {
           const parsedData = this.parseMessage(msg);
           this.onMessage(parsedData, msg);
-        } catch (err) { }
+        } catch (err) { 
+          console.error(err);
+        }
         
       })
     }
