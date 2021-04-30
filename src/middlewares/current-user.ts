@@ -12,15 +12,23 @@ declare global{
 }
 
 export const currentUser = ( req : Request , res : Response , next : NextFunction ) => {
-   
-    if(!req.session?.jwt){
-        return next();
+
+    const { authorization } = req.headers;
+    let token: string = "";
+
+    if(authorization){
+        token = (authorization!.split(" "))[1]
     }
 
-    try{
+    if(token){
+        const payload = jwt.verify(token ,  process.env.JWT_KEY!) as UserPayload;
+        req.currentUser = payload;
+    }
+
+    if(req.session?.jwt){
         const payload = jwt.verify(req.session.jwt ,  process.env.JWT_KEY!) as UserPayload;
         req.currentUser = payload;
-    }catch(err) { }
+    }
 
     next();
 }
